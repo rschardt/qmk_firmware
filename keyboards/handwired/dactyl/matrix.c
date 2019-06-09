@@ -31,11 +31,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Set 0 if debouncing isn't needed */
 
-#ifndef DEBOUNCING_DELAY
-#   define DEBOUNCING_DELAY 5
+#ifndef DEBOUNCE
+#   define DEBOUNCE 5
 #endif
 
-#if (DEBOUNCING_DELAY > 0)
+#if (DEBOUNCE > 0)
     static uint16_t debouncing_time;
     static bool debouncing = false;
 #endif
@@ -48,8 +48,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 static const uint8_t onboard_row_pins[MATRIX_ROWS] = MATRIX_ONBOARD_ROW_PINS;
 static const uint8_t onboard_col_pins[MATRIX_COLS] = MATRIX_ONBOARD_COL_PINS;
 static const bool col_expanded[MATRIX_COLS] = COL_EXPANDED;
-static const uint8_t expander_row_pins[MATRIX_ROWS] = MATRIX_EXPANDER_ROW_PINS;
-static const uint8_t expander_col_pins[MATRIX_COLS] = MATRIX_EXPANDER_COL_PINS;
 #endif
 
 /* matrix state(1:on, 0:off) */
@@ -58,12 +56,14 @@ static matrix_row_t matrix[MATRIX_ROWS];
 static matrix_row_t matrix_debouncing[MATRIX_ROWS];
 
 #if (DIODE_DIRECTION == COL2ROW)
+    static const uint8_t expander_col_pins[MATRIX_COLS] = MATRIX_EXPANDER_COL_PINS;
     static void init_cols(void);
     static bool read_cols_on_row(matrix_row_t current_matrix[], uint8_t current_row);
     static void unselect_rows(void);
     static void select_row(uint8_t row);
     static void unselect_row(uint8_t row);
 #elif (DIODE_DIRECTION == ROW2COL)
+    static const uint8_t expander_row_pins[MATRIX_ROWS] = MATRIX_EXPANDER_ROW_PINS;
     static void init_rows(void);
     static bool read_rows_on_col(matrix_row_t current_matrix[], uint8_t current_col);
     static void unselect_cols(void);
@@ -256,7 +256,7 @@ uint8_t matrix_scan(void)
 
 #if (DIODE_DIRECTION == COL2ROW)
     for (uint8_t current_row = 0; current_row < MATRIX_ROWS; current_row++) {
-#       if (DEBOUNCING_DELAY > 0)
+#       if (DEBOUNCE > 0)
             bool matrix_changed = read_cols_on_row(matrix_debouncing, current_row);
 
             if (matrix_changed) {
@@ -270,7 +270,7 @@ uint8_t matrix_scan(void)
 
 #elif (DIODE_DIRECTION == ROW2COL)
     for (uint8_t current_col = 0; current_col < MATRIX_COLS; current_col++) {
-#       if (DEBOUNCING_DELAY > 0)
+#       if (DEBOUNCE > 0)
             bool matrix_changed = read_rows_on_col(matrix_debouncing, current_col);
 
             if (matrix_changed) {
@@ -284,8 +284,8 @@ uint8_t matrix_scan(void)
     }
 #endif
 
-#   if (DEBOUNCING_DELAY > 0)
-        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCING_DELAY)) {
+#   if (DEBOUNCE > 0)
+        if (debouncing && (timer_elapsed(debouncing_time) > DEBOUNCE)) {
             for (uint8_t i = 0; i < MATRIX_ROWS; i++) {
                 matrix[i] = matrix_debouncing[i];
             }
@@ -299,7 +299,7 @@ uint8_t matrix_scan(void)
 
 bool matrix_is_modified(void) // deprecated and evidently not called.
 {
-#if (DEBOUNCING_DELAY > 0)
+#if (DEBOUNCE > 0)
     if (debouncing) return false;
 #endif
     return true;
