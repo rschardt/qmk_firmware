@@ -9,13 +9,6 @@
 #define NUMPAD 5 // numpad layer
 #define MEDIA 6 // media keys / Mouse-Navigation
 
-enum keycodes {
-    DYNAMIC_MACRO_RANGE,
-};
-
-// this include needs to be here: https://docs.qmk.fm/#/feature_dynamic_macros
-#include "dynamic_macro.h"
-
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* Keymap 0: Basic layer / VIM 
  * ,--------------------------------------------------.           ,--------------------------------------------------.
@@ -27,7 +20,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * | LShift |   K  |   Y  |   .  |   '  |   X  | ^    |           | $    |   J  |   G  |   Z  |   W  |   F  | RShift | 
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
- *   | M1Rec| M2Rec|M1Play|M2Play| Hypr |                                       |   H  |   J  |   K  |   L  | MStop| 
+ *   |      |      |      |      | Hypr |                                       |   H  |   J  |   K  |   L  |      | 
  *   `----------------------------------'                                       `----------------------------------'
  * LShift is Tab on Click                                                                                             
  *                                                                                                            
@@ -49,7 +42,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
           KC_NO, DE_P, DE_U, OSL(DIAK), DE_COMM, DE_Q, LCTL(DE_D),
         OSL(SYMBOLS), DE_H, DE_I, DE_E, DE_A, DE_O,
     	SFT_T(KC_TAB), DE_K, DE_Y, DE_DOT, DE_QUOT, DE_X, DE_CIRC,
-        DYN_REC_START1, DYN_REC_START2, DYN_MACRO_PLAY1, DYN_MACRO_PLAY2, OSM(MOD_HYPR),
+        KC_NO, KC_NO, KC_NO, KC_NO, OSM(MOD_HYPR),
         
 
 	// left hand thumb-cluster
@@ -63,7 +56,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         LCTL(DE_U), DE_V, DE_C, DE_L, DE_M, DE_B, TG(MEDIA),
                   DE_D, DE_T, DE_R, DE_N, DE_S, TG(ARW),
         DE_DLR, DE_J, DE_G, DE_Z, DE_W, DE_F, KC_RSFT,
-                         KC_H, KC_J, KC_K, KC_L, DYN_REC_STOP,
+                         KC_H, KC_J, KC_K, KC_L, KC_NO,
 
 	// right thumb-cluster
         OSM(MOD_MEH), KC_LALT,
@@ -332,15 +325,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
        KC_BTN3, KC_BTN1, KC_BTN2
 ),
 };
-
-// enables dynamic macros
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-
-    if (!process_record_dynamic_macro(keycode, record)) {
-        return false;
-    }
-    return true;
-}
 
 // runs constantly in the background, in a loop.
 /* Ergodox Infinity

@@ -3,8 +3,8 @@ This is a fork of the adnw_k_o_y-Layout
 Features:
 - Diakritika-Layer for ADNW-PUQ-Layout
 - all basic-symbols of the german-layout can be found in the Symbol- and Diakritika-Layer
-- Symbol-Layer: Symbols are mirrored -- left = <  and right =  >
-- Basic-Layer-Keys which always be present in any Layer and allow the movement between layers
+- Symbol-Layer: symbols are mirrored -- left = <  and right =  >
+- Basic-Layer-Keys which always be present in any layer and allow the movement between layers
 - HJKL-Keys and Arrow-Keys can be switched, necessary for working with a terminal and vim
 - Number-Layer for Numpad-Emulation
 - Brackets-Layer for easier programming
